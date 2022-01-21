@@ -4,6 +4,10 @@
 
 # Ideas
 
+## 2022/01/21
+
+Causal inference methods: Yao, L., Chu, Z., Li, S., Li, Y., Gao, J., & Zhang, A. (2021). A Survey on Causal Inference. ACM Transactions on Knowledge Discovery from Data (TKDD), 15(5), 1-46. (in bib/Statistics)
+
 ## 2022/01/20
 
  * Benchmark of "structuring effects" methods: original; causality: lagged correlations, Granger, instrumental variables, diff in diff, synthetic entity; ?
