@@ -4,6 +4,11 @@
 
 # Ideas
 
+
+## 2022/01/31
+
+\cite{perret2016donnees} basis geohistoricaldata
+
 ## 2022/01/21
 
 Causal inference methods: Yao, L., Chu, Z., Li, S., Li, Y., Gao, J., & Zhang, A. (2021). A Survey on Causal Inference. ACM Transactions on Knowledge Discovery from Data (TKDD), 15(5), 1-46. (in bib/Statistics)
