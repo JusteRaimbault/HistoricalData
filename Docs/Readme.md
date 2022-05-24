@@ -5,6 +5,10 @@
 # Ideas
 
 
+## 2022/02/23
+
+NetworksTerritories/HistoricalData/Soduco_main.pdf full project
+
 ## 2022/01/31
 
 \cite{perret2016donnees} basis geohistoricaldata
