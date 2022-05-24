@@ -1,4 +1,18 @@
 
+
+
+https://zenodo.org/record/6394464#.YoyeUznP1hE
+
+NetworksTerritories/HistoricalData/DAS22-paper.pdf
+
+https://github.com/soduco/paper-ner-bench-das22
+
+https://github.com/soduco/dataset_french_trade_directories_19_century
+
+https://github.com/orgs/soduco/repositories
+
+----
+
 https://github.com/soduco/soduco.github.io
 
 https://soduco.github.io/papers_data_tools/
