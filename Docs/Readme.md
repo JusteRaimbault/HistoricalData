@@ -5,6 +5,12 @@
 # Ideas
 
 
+
+## 2022/05/31
+
+future work: co-evol with road nw data - geohistoricaldata?
+
+
 ## 2022/02/23
 
 NetworksTerritories/HistoricalData/Soduco_main.pdf full project
