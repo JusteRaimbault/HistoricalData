@@ -1,0 +1,70 @@
+\documentclass[a4paper]{article}
+\usepackage{CCS2022,color,hyperref}
+
+\begin{document}
+
+\title{Quantifying the co-evolution of economic activities locations with geo-historical data: Paris, 19th century}
+
+\author{
+\underline{Juste Raimbault}$^{1,2,3,4}$,
+\and
+Julien Perret$^1$
+\medskip\\
+$^1$LASTIG, Univ Gustave Eiffel, IGN-ENSG, Saint-Mand{\'e}, France
+\\
+$^2$CASA, UCL, London, UK
+\\
+$^3$UPS CNRS 3611 ISC-PIF, Paris, France
+\\
+$^4$UMR CNRS 8504 G{\'e}ographie-cit{\'e}s, Paris, France
+}
+\maketitle
+
+% keywords: socio-historical dynamics, location of economic activities, urban dynamics, co-evolution
+
+% Uncomment next line for switch off column balancing (only if you have problems with column balancing).
+%\raggedcolsend\raggedend
+
+% Body text %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Urban systems are highly complex, what poses issues to ensure their resilience and sustainability and plan future cities \cite{batty2018inventing}. One aspect of this complexity is their multidimensionality, even within subsystems such as the intra-urban location of economic activities. Indeed, different types of activities have specific location processes, yielding various patterns for their accessibility for example \cite{paez2004network}. Understanding past dynamics of such social processes is crucial to build better urban models, theories and in practical terms insights for sustainable planning \cite{rozenblat2018international}.
+
+While recent and current urban dynamics are more and more easily tracked and quantified through the emergence of large urban data \cite{kandt2021smart}, historical dynamics on long time scales or on timeframes in a distant past are difficult to quantify due to the sparsity and heterogeneity of geo-historical data. At the macroscopic scale of urban systems, major transitions of past settlements systems have been modeled from an interdisciplinary perspective \cite{sanders2018peupler}, and simulation models capturing various dimensions of systems of cities have been developed \cite{pumain2017urban}. At the mesoscopic and microsocpic intra-urban scales, several issues are encountered when trying to build consistent dataset, such as geocoding \cite{cura2018historical} or vectorisation to reconstruct the dynamics of road networks \cite{el2022urban}.
+
+This contribution builds on data produced by the Soduco research project \cite{soduco} to investigate co-evolutionary dynamics in the location of economic activities. More precisely, we focus on the case of Paris in the middle of the 19th century. Using public domain scans for main economic activity repertoires (``\textit{Didot-Bottin}''), an other work package of the project focused on building geo-referenced data containing activities of various professionals, using Optical Character Recognition techniques. We work on a sample of this data currently available, spanning 4 years between 1841 and 1844.
+
+Starting from an initial dataset of 415,976 entries, we keep the ones with correct geographical coordinates (33\%), and apply natural language processing (stemming and stop-word removal) to raw strings describing activities. From there, we focus on the stems with more than 100 occurences (578 stems), and code manually a broad category of economic activity for each (obtaining the coarse grain classification within: food, craftsmanship, art and literature, health, law and governance, service, teaching). We end at this stage with 36,072 entries with identified coordinates and broad activity. Source code and results are openly available on the git repository of this work at \url{https://github.com/JusteRaimbault/HistoricalData}.
+
+To study co-evolutionary dynamics, we use the definition and characterisation method proposed by \cite{raimbault2021characterising}, which is based on weak Granger causality: two urban attributes will be co-evolving if they statistically exhibit a circualar causal relationship in this context. Aggregating spatially on raster cells (10x10 grid for the whole Paris), we thus compute lagged correlations between the variations of activity counts between successive dates for each cell, for each pair of activity. We find several significant correlations (using Fisher confidence intervals), mostly negative for lagged correlations. This corresponds to a dynamic of sustitution of activities, with clusters rapidly replaced. Food and health are positively correlated and in co-evolution, while the other significantly co-evolving couple of activities is health and art but in a negative manner: in some districts medical professions replace artists and the contrary in others. We also consider simultaneous correlations, and find for example that food and craftsmanship have joint dynamics in the last time interval, but not during the first considered. Altogether, these results first confirm the existence of a co-evolution between some activities, unveil a precise characterisation of intra-urban socio-economic dynamics, and open the path towards more advanced thematic interpretations within an interdisciplinary context, such as with historians.
+
+Current and future  work also include (i) the extension of this study on longer time spans; (ii) the combination of Granger causality with geographically weighted regression, to optimise spatial neighbourhood considered in regressions \cite{brunsdon1998geographically}, and (iii) the benchmark of methods to characterise co-evolution (including e.g. instrumental variables or causal machine learning methods) on this particular dataset.
+
+
+
+
+
+
+
+
+
+
+% References %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\footnotesize
+
+\bibliographystyle{unsrt}
+\bibliography{biblio}
+
+\end{document}
+
+
+% Figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H]
+\begin{center}
+%\includegraphics[width=8cm]{figure1}
+\caption{Include here the figure caption.}
+\label{fig1}
+\end{center}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

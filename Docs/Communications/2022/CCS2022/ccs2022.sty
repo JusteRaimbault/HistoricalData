@@ -1,0 +1,225 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Style for the Confrence on Complex Systems CCS.
+% Use with "article" standard LaTeX document class:                                
+%   \documentclass[a4paper]{article}                                               
+%   \usepackage{ccs2022}                                                         
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{CCS2022}
+
+
+% Get packages that we will need.
+
+\RequirePackage[numbers]{natbib}
+\RequirePackage{times}
+\RequirePackage[pdftex]{graphicx}
+\RequirePackage{amsmath}
+\RequirePackage[pass,a4paper]{geometry}
+\RequirePackage{flushend}
+\RequirePackage{float}
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
+\DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
+
+
+% Make the physical page layout.
+
+\DeclareOption{oneabstract}{
+  \setlength\textheight{11.5in}
+  \setlength\headsep{0in}
+  \thispagestyle{empty}
+  \pagestyle{empty}
+  \twocolumn
+}
+\DeclareOption{bookofabstracts}{
+  \setlength\textheight{10.54in}
+  \setlength\headsep{0.36in}
+  \pagestyle{myheadings}
+  \onecolumn
+}
+\ExecuteOptions{oneabstract}
+\ProcessOptions\relax
+
+\setlength\topmargin{-1.1in}
+
+\setlength\oddsidemargin{-0.336in}
+\setlength\evensidemargin{-0.336in}
+\setlength\textwidth{7in}
+\setlength\columnsep{0.375in}
+\newlength\titlebox
+\setlength\titlebox{2.0in}
+\setlength\headheight{0in}
+\setlength\footskip{0in}
+\flushbottom
+\sloppy
+
+
+% Title definitions, taken from deproc.
+
+\def\maketitle{\par
+ \begingroup	%To make the footnote style local to the title
+   \def\thefootnote{\fnsymbol{footnote}}
+   \def\@makefnmark{\hbox to 0pt{$^{\@thefnmark}$\hss}}
+   \twocolumn[\@maketitle] \@thanks
+ \endgroup
+\setcounter{footnote}{0}
+ \let\maketitle\relax \let\@maketitle\relax
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
+\def\@maketitle{\vbox to \titlebox{\hsize\textwidth
+ \linewidth\hsize \vskip 0.36in \centering
+ {\LARGE\bf \@title \par} \vskip 0.2in plus 1fil minus 0.1in
+ {\def\and{\unskip\enspace{\rm and}\enspace}%
+  \def\And{\end{tabular}\hss \egroup \hskip 1in plus 2fil
+           \hbox to 0pt\bgroup\hss \begin{tabular}[t]{c}\Large\bf}%
+  \def\AND{\end{tabular}\hss\egroup \hfil\hfil\egroup
+          \vskip 0.25in plus 1fil minus 0.125in
+           \hbox to \linewidth\bgroup\Large \hfil\hfil
+             \hbox to 0pt\bgroup\hss \begin{tabular}[t]{c}\Large\bf}
+  \hbox to \linewidth\bgroup\normalsize \hfil\hfil
+    \hbox to 0pt\bgroup\hss \begin{tabular}[t]{c}\Large\@author
+                            \end{tabular}\hss\egroup
+    \hfil\hfil\egroup}
+  \vskip 0.3in plus 2fil minus 0.1in
+}}
+
+\def\maketitulo{\par
+ \begingroup	%To make the footnote style local to the title
+   \def\thefootnote{\fnsymbol{footnote}}
+   \def\@makefnmark{\hbox to 0pt{$^{\@thefnmark}$\hss}}
+   \twocolumn[\@maketitle] \@thanks
+ \endgroup
+\setcounter{footnote}{0}
+\setcounter{figure}{0}
+\setcounter{equation}{0}
+\setcounter{table}{0}
+ \let\maketitle\relax 
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
+
+\renewenvironment{abstract}{\centerline{\bf
+ Abstract}\vspace{0.5ex}\begin{quote}\small}{\par\end{quote}\vskip 1ex}
+
+
+% Change "\contentsname".
+
+\renewcommand{\contentsname}{\centering{\LARGE
+ {\sc Contenidos}/{\it C{\large ONTENTS}}}\\[1in]}
+
+
+% Change "\figurename".
+
+\renewcommand{\figurename}{Fig.}
+
+
+% Set fignamename-caption separator as a period.
+
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{#1. #2}%
+  \ifdim \wd\@tempboxa >\hsize
+    #1. #2\par
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+
+% Sections with less space.
+
+\def\section{\@startsection {section}{1}{\z@}{-2.0ex plus
+   -0.5ex minus -.2ex}{3pt plus 2pt minus 1pt}{\Large\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-2.0ex plus
+    -0.5ex minus -.2ex}{3pt plus 2pt minus 1pt}{\large\bf\raggedright}}
+\def\subsubsection{\@startsection{subparagraph}{3}{\z@}{-2.0ex plus
+    -0.5ex minus -0.0ex}{-1em}{\normalsize\bf}}
+
+\setcounter{secnumdepth}{0}
+
+
+% Change of footnotes.
+
+\footnotesep 6.65pt %
+\skip\footins 9pt plus 4pt minus 2pt
+\def\footnoterule{\kern-3pt \hrule width 5pc \kern 2.6pt }
+\setcounter{footnote}{0}
+
+
+% Lists and paragraphs.
+
+\parindent 10pt
+\topsep 4pt plus 1pt minus 2pt
+\partopsep 1pt plus 0.5pt minus 0.5pt
+\itemsep 2pt plus 1pt minus 0.5pt
+\parsep 2pt plus 1pt minus 0.5pt
+
+\leftmargin 10pt \leftmargini\leftmargin \leftmarginii 10pt
+\leftmarginiii 5pt \leftmarginiv 5pt \leftmarginv 5pt \leftmarginvi 5pt
+\labelwidth\leftmargini\advance\labelwidth-\labelsep \labelsep 5pt
+
+\def\@listi{\leftmargin\leftmargini}
+\def\@listii{\leftmargin\leftmarginii
+   \labelwidth\leftmarginii\advance\labelwidth-\labelsep
+   \topsep 2pt plus 1pt minus 0.5pt
+   \parsep 1pt plus 0.5pt minus 0.5pt
+   \itemsep \parsep}
+\def\@listiii{\leftmargin\leftmarginiii
+    \labelwidth\leftmarginiii\advance\labelwidth-\labelsep
+    \topsep 1pt plus 0.5pt minus 0.5pt
+    \parsep \z@ \partopsep 0.5pt plus 0pt minus 0.5pt
+    \itemsep \topsep}
+\def\@listiv{\leftmargin\leftmarginiv
+     \labelwidth\leftmarginiv\advance\labelwidth-\labelsep}
+\def\@listv{\leftmargin\leftmarginv
+     \labelwidth\leftmarginv\advance\labelwidth-\labelsep}
+\def\@listvi{\leftmargin\leftmarginvi
+     \labelwidth\leftmarginvi\advance\labelwidth-\labelsep}
+
+\abovedisplayskip 7pt plus2pt minus5pt%
+\belowdisplayskip \abovedisplayskip
+\abovedisplayshortskip  0pt plus3pt%
+\belowdisplayshortskip  4pt plus3pt minus3pt%
+
+
+% Less leading in most fonts (due to the narrow columns).
+% The choices were between 1-pt and 1.5-pt leading.
+
+\def\@normalsize{\@setsize\normalsize{11pt}\xpt\@xpt}      % 10 point on 11
+\def\small{\@setsize\small{10pt}\ixpt\@ixpt}               %  9 point on 10
+\def\footnotesize{\@setsize\footnotesize{10pt}\ixpt\@ixpt} %  9 point on 10
+\def\scriptsize{\@setsize\scriptsize{8pt}\viipt\@viipt}    %  7 point on  8
+\def\tiny{\@setsize\tiny{7pt}\vipt\@vipt}                  %  6 point on  7
+\def\large{\@setsize\large{12pt}\xipt\@xipt}               % 11 point on 12
+\def\Large{\@setsize\Large{14pt}\xiipt\@xiipt}             % 12 point on 14
+\def\LARGE{\@setsize\LARGE{16pt}\xivpt\@xivpt}             % 14 point on 16
+\def\huge{\@setsize\huge{20pt}\xviipt\@xviipt}             % 17 point on 20
+\def\Huge{\@setsize\Huge{23pt}\xxpt\@xxpt}                 % 20 point on 23
+
+
+% The material below has been modified from apalike.sty.
+
+\@ifundefined{chapter}{\def\thebibliography#1{\vspace{2ex}\noindent\hrule\vspace{1ex}\@mkboth
+  {REFERENCES}{REFERENCES}\list
+  {\relax}{\setlength{\labelsep}{0.4em}
+    \setlength{\itemindent}{-1.5\labelsep}
+    \setlength{\leftmargin}{1.5em}}
+    \def\newblock{\hskip .11em plus .33em minus .07em}
+    \sloppy\clubpenalty4000\widowpenalty4000
+    \sfcode`\.=1000\relax}}%
+{\def\thebibliography#1{\chapter*{Bibliography\@mkboth
+  {BIBLIOGRAPHY}{BIBLIOGRAPHY}}\list
+  {\relax}{\setlength{\labelsep}{0em}
+    \setlength{\itemindent}{-\bibhang}
+    \setlength{\leftmargin}{\bibhang}}
+    \def\newblock{\hskip .11em plus .33em minus .07em}
+    \sloppy\clubpenalty4000\widowpenalty4000
+    \sfcode`\.=1000\relax}}
+
+\def\@citex[#1]#2{\if@filesw\immediate\write\@auxout{\string\citation{#2}}\fi
+  \def\@citea{}\@cite{\@for\@citeb:=#2\do
+    {\@citea\def\@citea{; }\@ifundefined
+       {b@\@citeb}{{\bf ?}\@warning
+       {Citation `\@citeb' on page \thepage \space undefined}}%
+{\csname b@\@citeb\endcsname}}}{#1}}
+
+
+\endinput
