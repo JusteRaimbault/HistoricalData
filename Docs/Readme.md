@@ -5,6 +5,15 @@
 # Ideas
 
 
+## 2022/06/14
+
+
+Retours reunion auj: TODO
+
+----
+
+Projet POPP: https://dhai-seminar.github.io/past/ Projet d’Océrisation des recensements de la Population Parisienne -> 1926, 1931, 1941 et 1946 : trop recent, mais utilisable?
+
 
 ## 2022/05/31
 

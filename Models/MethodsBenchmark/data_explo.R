@@ -17,6 +17,7 @@ lat = sapply(addresses,function(r){if(is.na(r)) NA else if(is.null(r[[1]]$lat)) 
 
 d$lon = lon; d$lat = lat
 
+
 length(which(is.na(lon)))/length(lon)
 # 67% of NA
 
