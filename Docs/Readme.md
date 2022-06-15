@@ -5,6 +5,25 @@
 # Ideas
 
 
+
+## 2022/06/15
+
+Reunion 14/06
+ 
+ - taxonomie: niveau de finesse? processes comme microfabrique ds les ilots (urbaine et sociale), detruite pdt Haussman - loupé avec coarse grain?
+ - stabilité taxo ds le temps? -> a terme sorte de Philomemie (activités disparaissent, mergent etc.) - Q: sens d'une classif "stable"? comment agréger philomemeie ? du coup classif bottom-up a partir de l'arbre temporel?
+ - faire nouvelles cartes: points? population? fond de carte? projection!
+ - coevolution avec infra etc: batiments difficile, tres peu dessines; reseau routier, eventuellement land-use ilots. checks data reseaux, erreurs papier Barth
+ - ! sensibilité à l'espace dans ces analyses: reseau, grille, etc.: validité et robustesse resultats
+ - conditionnement stat type ilot (granger: modele stat - ici que 2 vars donc corr ~ ok)
+ - hypothese socio-eco a tester? illusion de la modernité, activités nouveaux quartiers bourgeois
+
+-> données réseau: graphe spatio-temporel; nouvelles données annuaire
+-> prochaine AG sept (feedback avant CCS)
+-> autres approches classif activités (NER, son?) - rq levenstein marche pas.
+[hs: données brevets // SDGs FRCCS -> collab inpi - geocodage -> investig?]
+
+
 ## 2022/06/14
 
 
