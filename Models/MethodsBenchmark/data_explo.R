@@ -8,6 +8,7 @@ library(jsonlite)
 library(corpus)
 library(stringdist)
 library(corrplot)
+library(ggmap)
 
 d <- read_csv('Data/Soduco/ftp3.ign.fr/Data/data-1641486178716.csv')
 
@@ -21,10 +22,24 @@ d$lon = lon; d$lat = lat
 length(which(is.na(lon)))/length(lon)
 # 67% of NA
 
+
+map <- get_map(location=c(left = 2.25, bottom=48.825, right=2.41, top=48.9), zoom = 14, source = "osm", color = "bw")
+
 for(y in unique(d$year)){
   inds = (d$year==y)
+  
+  df = data.frame(lon = lon[inds],lat = lat[inds])
+  
+  # works with bbox location only for OSM (otherwise get gmaps - needs api key)
+  
   ggsave(
-    ggplot(data.frame(lon = lon[inds],lat = lat[inds]),aes(x=lon,y=lat))+geom_density2d_filled()+ggtitle(y)
+    ggmap(map)+geom_point(data=df, aes(x=lon,y=lat), colour="red", alpha = .1)+
+      #geom_density2d_filled(data=df,aes(x=lon,y=lat), alpha =0.3) + 
+      stat_density2d(data=df,aes(x=lon,y=lat, fill= ..level..), alpha =0.3, geom="polygon")+
+      ggtitle(y)
+  
+ 
+    #ggplot(,aes(x=lon,y=lat))+geom_density2d_filled()+ggtitle(y)
     , file=paste0('Results/MethodsBenchmark/density-',y,'.png'), width=20,height=18, units='cm'
   )
 }
@@ -100,8 +115,12 @@ d = d[which(!is.na(d$lat)&!is.na(d$lon)&!is.na(d$mainsynthact)&!is.na(d$year)),]
 for(y in unique(d$year)){
   for(act in unique(d$mainsynthact)){
   inds = (d$year==y&d$mainsynthact==act)
+  df = data.frame(lon = d$lon[inds],lat = d$lat[inds])
   ggsave(
-    ggplot(data.frame(lon = d$lon[inds],lat = d$lat[inds]),aes(x=lon,y=lat))+geom_density2d_filled()+ggtitle(y)
+    #ggplot(data.frame(lon = d$lon[inds],lat = d$lat[inds]),aes(x=lon,y=lat))+geom_density2d_filled()+ggtitle(y)
+    ggmap(map)+geom_point(data=df, aes(x=lon,y=lat), colour="red", alpha = .1)+
+      stat_density2d(data=df,aes(x=lon,y=lat, fill= ..level..), alpha =0.3, geom="polygon")+
+      ggtitle(y)
     , file=paste0('Results/MethodsBenchmark/density-',y,'-',act,'.png'), width=20,height=18, units='cm'
   )
 }
