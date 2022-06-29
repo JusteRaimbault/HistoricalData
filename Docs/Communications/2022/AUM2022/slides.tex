@@ -171,13 +171,23 @@ $\rightarrow$ geovisualisation of data and associated dynamics.
 %to assess whether this map has a planimetric accuracy that is good enough for it to serve as a primary source to create a geohistorical reference dataset on the city of Paris at the end of the 18th century.
 % One of the results of the Verniquet workshop is the reconstitution of the parameters of the projected coordinate reference system defined and used by Edme Verniquet to draw up his map of Paris. This reference coordinate system was reused throughout the 19th century in many other maps of Paris.
 
+% https://github.com/soduco/Atlas-de-Verniquet
+
 \begin{columns}
 	\begin{column}{0.6\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/verniquet.png}
 	\end{column}
 	\begin{column}{0.4\textwidth}
+		\textit{Fieldwork survey with modern instruments to verify the planimetric accuracy of Verniquet atlas (claimed at 1/10 of a toise $\simeq$ 19cm)}
 		
+		\bigskip
+		
+		$\rightarrow$ Claimed uncertainties were correct
+		
+		\bigskip
+		
+		$\rightarrow$ CRS parameters for the historical coordinate system (reused as reference in many historical plans)
 	\end{column}
 \end{columns}
 
@@ -187,6 +197,19 @@ $\rightarrow$ geovisualisation of data and associated dynamics.
 \sframe{Vectorisation of historical maps}{
 
 % examples yizi thesis?
+
+\begin{center}
+	\includegraphics[width=\textwidth]{figures/vectorisation_issues.png}
+	
+	%\hrule
+		\includegraphics[width=\textwidth]{figures/vectorisation_workflow.png}
+\end{center}
+
+\footnotesize
+
+\vspace{-0.5cm}
+
+PhD thesis by Yizi Chen soon finished: vectorisation combining deep learning and mathemaatical morphology \cite{chen2021vectorization} \cite{chen2021combining}
 
 }
 
@@ -202,7 +225,20 @@ $\rightarrow$ geovisualisation of data and associated dynamics.
 %[2] Antonio Paez. Network accessibility and the spatial distri- bution of economic activity in eastern asia. Urban Studies, 41(11):2211–2230, 2004.
 %[3] Celine Rozenblat, Denise Pumain, and Elkin Velasquez. In- ternational and transnational perspectives on urban systems. Springer, 2018.
 
+$\rightarrow$ Multi-dimensionality of urban systems is one aspect of their complexity, strongly present in the co-evolution of economic activities locations.
 
+\medskip
+
+$\rightarrow$ Understanding past processes better inform urban theories and models for future sustainable planning.
+
+
+\bigskip
+
+\textbf{Research objective of this contribution (partly WP3): }
+
+\medskip
+
+\textit{Use geo-historical data to quantify the co-evolution of economic activities in Paris during the 19th century; methodological aspects on the issues linked to the exploitation of such data.}
 
 }
 
@@ -217,7 +253,19 @@ $\rightarrow$ geovisualisation of data and associated dynamics.
 %[7] Remi Cura, Bertrand Dumenieu, Nathalie Abadie, Benoit Costes, Julien Perret, and Maurizio Gribaudi. Historical col- laborative geocoding. ISPRS International Journal of Geo- Information, 7(7):262, 2018.
 %[8] Hanae El Gouj, Christian Rincon-Acosta, and Claire Lagesse. Urban morphogenesis analysis based on geohistorical road data. Applied Network Science, 7(1):1–26, 2022.
 
+$\rightarrow$ Contemporary intra-urban dynamics are better and better characterised through the emergence of urban data and urban analytics \cite{kandt2021smart}; more difficult with past dynamics.
 
+\bigskip
+
+$\rightarrow$ Interdisciplinary approaches to the modeling of settlement systems transitions: qualitative or very sparse data, stylised models (Transmondyn project) \cite{sanders2018peupler}
+
+\bigskip
+
+$\rightarrow$ Stylised models for systems of cities on long time scales \cite{pumain2017urban}
+
+\bigskip
+
+$\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018historical}, vectorisation \cite{el2022urban}
 
 }
 
@@ -282,20 +330,20 @@ $\rightarrow$ geovisualisation of data and associated dynamics.
 }
 
 
-\sframe{}{
+\sframe{Application to this dataset}{
 
 % Aggregating spatially on raster cells (10x10 grid for the whole Paris), we thus com- pute lagged correlations between the variations of activity counts between successive dates for each cell, for each pair of activity. 
 
 }
 
 
-\sframe{}{
+\sframe{Results: co-evolution}{
 
 %We find several significant correlations (using Fisher confidence intervals), mostly negative for lagged cor- relations. This corresponds to a dynamic of sustitution of activities, with clusters rapidly replaced. Food and health are positively correlated and in co-evolution, while the other significantly co-evolving couple of activities is health and art but in a negative manner: in some districts medical pro- fessions replace artists and the contrary in others.
 
 }
 
-\sframe{}{
+\sframe{Simultaneous correlations}{
 
 %  We also consider simultaneous correlations, and find for example that food and craftsmanship have joint dynamics in the last time interval, but not during the first considered. 
 
