@@ -99,8 +99,10 @@ Session 8: New data, new methods, new fields (2)\\
 \sframe{SoDUCo (Social Dynamics in Urban Context) ANR project}{
 
 \begin{center}
-\includegraphics[height=0.85\textheight]{figures/soduco_presentation.png}
-\end{center}t
+\includegraphics[height=0.75\textheight]{figures/soduco_presentation.png}
+\end{center}
+
+\vspace{-0.5cm}
 
 \url{https://soduco.github.io/}
 
@@ -274,7 +276,7 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 
 \sframe{Data extraction}{
 
-% This contribution builds on data produced by the Soduco research project [9] to investigate co-evolutionary dynamics in the location of economic activities. More precisely, we focus on the case of Paris in the middle of the 19th cen- tury. Using public domain scans for main economic activ- ity repertoires (“Didot-Bottin”), an other work package of the project focused on building geo-referenced data contain- ing activities of various professionals, using Optical Char- acter Recognition techniques. We work on a sample of this data currently available, spanning 4 years between 1841 and 1844.
+% This contribution builds on data produced by the Soduco research project [9] to investigate co-evolutionary dynamics in the location of economic activities. More precisely, we focus on the case of Paris in the middle of the 19th cen- tury. Using public domain scans for main economic activ- ity repertoires (“Didot-Bottin”), an other work package of the project focused on building geo-referenced data contain- ing activities of various professionals, using Optical Char- acter Recognition techniques. 
 
 % -> example of Didot?
 
@@ -287,7 +289,23 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 		\includegraphics[width=\linewidth]{figures/didot.png}
 	\end{column}
 	\begin{column}{0.4\textwidth}
+		\textit{Several commercial economic activities repertoires, archived and digitalised.}
 		
+		\bigskip
+		
+		$\rightarrow$ Work on \textit{Didot-Bottin}, covering most of 19th century
+		
+		\bigskip
+		
+		$\rightarrow$ Document segmentation, OCR
+		
+		\bigskip
+		
+		$\rightarrow$ Named Entity Recognition to extract names, adresses, professions
+		
+		\bigskip
+		
+		$\rightarrow$ Historical geocoding
 	\end{column}
 \end{columns}
 
@@ -299,7 +317,24 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 
 \sframe{Data pre-processing}{
 
+% We work on a sample of this data currently available, spanning 4 years between 1841 and 1844.
+
 % Starting from an initial dataset of 415,976 entries, we keep the ones with correct geographical coordinates (33%), and apply natural language processing (stemming and stop-word removal) to raw strings describing activities. From there, we focus on the stems with more than 100 occurences (578 stems), and code manually a broad category of economic activity for each (obtaining the coarse grain classification within: food, craftsmanship, art and literature, health, law and governance, service, teaching). We end at this stage with 36,072 entries with identified coordinates and broad ac- tivity. Source code and results are openly available on the git repository of this work at https://github.com/ JusteRaimbault/HistoricalData.
+
+
+$\rightarrow$ Data sample covering 1841-1844: 415,976 entries, 33\% with coordinates.
+
+\bigskip
+
+$\rightarrow$ Natural Language Processing: stop-words removal and stemming to descriptions of activities.
+
+\bigskip
+
+$\rightarrow$ Stems with more than 100 occurrences (578) coded for broad activities (food, craftsmanship, art and literature, health, law and governance, service, teaching)
+
+\bigskip
+
+$\rightarrow$ 36,072 entries with coordinates and activities
 
 
 
@@ -315,10 +350,42 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 % maps - to be redone !
 % stored processed data? see other ordi tonight
 
+\begin{center}
+\hspace{-1cm}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1841.png}\hspace{0.1cm}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1844.png}
+\end{center}
+
+
+
 }
 
 
-\sframe{Definition and characterisation of co-evolution}{
+\sframe{Location of activities}{
+
+% maps - to be redone !
+% stored processed data? see other ordi tonight
+
+\begin{center}
+\hspace{-1cm}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1844-craftsmanship.png}\hspace{0.1cm}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1844-law.png}
+\end{center}
+
+\medskip
+
+Left: craftsmanship; Right: law.
+
+
+}
+
+
+
+
+
+
+\sframe{Defining co-evolution}{
+
 
 % To study co-evolutionary dynamics, we use the defini- tion and characterisation method proposed by [10], which is based on weak Granger causality: two urban attributes will be co-evolving if they statistically exhibit a circualar causal relationship in this context.
 % -> diagram soutenance? -> slides AG soduco
@@ -327,12 +394,86 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 
 
 
+%\justify
+ 
+  \textbf{Objects: } Cities and territories (\textit{Evolutionary Urban Theory} \cite{pumain2018evolutionary}) co-evolving with transport networks (\textit{Territorial Theory of Networks} \cite{dupuy1987vers})
+ 
+ \medskip
+
+
+\textbf{Processes: }
+
+\textit{A multi-level definition of co-evolution:} 
+\begin{enumerate}
+	\item \textcolor{blue}{agents level}
+	\item \textcolor{green}{agent populations level (niches)}
+	\item \textcolor{red}{global system level}
+\end{enumerate}  
+
+
+\medskip
+
+
+\textbf{Corresponding approaches: }
+
+\begin{enumerate}
+	\item \textcolor{blue}{Empirical approach (microscopic level)}
+	\item \textcolor{green}{Morphogenesis approach (niche level)}
+	\item \textcolor{red}{Evolutionary theory approach (global level)}
+\end{enumerate}
+
+\medskip
+
+\tiny
+
+Raimbault, J. (2019). Modeling interactions between transportation networks and territories: a co-evolution approach. arXiv preprint arXiv:1902.04802.
+ 
+ \nocite{raimbault2019modeling}
+ 
 }
+
+
+
+\sframe{Method to characterise co-evolution}{
+
+\begin{center}
+\includegraphics[width=0.8\linewidth]{figures/causality_twovars.pdf}
+\end{center}
+
+\tiny
+
+Raimbault, J. (2017). Identification de causalités dans des données spatio-temporelles. In Spatial Analysis and GEOmatics 2017.
+
+\nocite{raimbault2017identification}
+
+}
+
+
+
 
 
 \sframe{Application to this dataset}{
 
 % Aggregating spatially on raster cells (10x10 grid for the whole Paris), we thus com- pute lagged correlations between the variations of activity counts between successive dates for each cell, for each pair of activity. 
+
+$\rightarrow$ Activity counts $N_{a,r}$ within raster cells: 10x10 grid to split the covered area into zones.
+
+\bigskip
+
+$\rightarrow$ Variation of activity counts in time $\Delta N_{a,r} (t) = N_{a,r}(t+\Delta t) - N_{a,r}(t)$
+
+\bigskip
+
+$\rightarrow$ Lagged correlations in time between activities
+
+\[
+\rho_{r,s}(\tau) = \rho \left[\Delta N_{a,r} (t), \Delta N_{a,s} (t - \tau) \right]
+\]
+
+\bigskip
+
+$\rightarrow$ On the sample dataset, $\tau = 1$ (3 exploitable dates)
+
 
 }
 
@@ -341,11 +482,23 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 
 %We find several significant correlations (using Fisher confidence intervals), mostly negative for lagged cor- relations. This corresponds to a dynamic of sustitution of activities, with clusters rapidly replaced. Food and health are positively correlated and in co-evolution, while the other significantly co-evolving couple of activities is health and art but in a negative manner: in some districts medical pro- fessions replace artists and the contrary in others.
 
+\centering
+
+\includegraphics[height=0.9\textheight]{figures/laggedcorrs-12.png}
+
+
 }
 
 \sframe{Simultaneous correlations}{
 
 %  We also consider simultaneous correlations, and find for example that food and craftsmanship have joint dynamics in the last time interval, but not during the first considered. 
+
+\centering
+
+\includegraphics[height=0.9\textheight]{figures/laggedcorrs-22.png}
+
+
+
 
 }
 
@@ -358,6 +511,38 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 
 %[11] Chris Brunsdon, Stewart Fotheringham, and Martin Charlton. Geographically weighted regression. Journal of the Royal Sta- tistical Society: Series D (The Statistician), 47(3):431–443, 1998.
 
+$\rightarrow$ Micro insights into historical intra-urban economic processes.
+
+\medskip
+
+$\rightarrow$ Existence of a co-evolution between some activities (circular causality in location dynamics).
+
+\medskip
+
+$\rightarrow$ In discussion with historians in the project: capture qualitative knowledge (e.g. ``\textit{fabrique urbaine}'')?
+
+
+\bigskip
+
+\textbf{Current and future work:}
+
+\medskip
+
+$\rightarrow$ Extension to a longer time span (all repertoires soon processed for OCR).
+
+\medskip
+
+$\rightarrow$ Sensitivity analysis to classification, meta-parameters; null model with random activities.
+
+\medskip
+
+$\rightarrow$ Endogenous spatial neighbourhoods to estimate correlations, using a GWR-like approach \cite{brunsdon1998geographically}.
+
+\medskip
+
+$\rightarrow$ Benchmark of methods to measure co-evolution (instrumental variables, causal machine learning).
+
+
 }
 
 
@@ -365,23 +550,29 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 
 \sframe{Conclusion}{
 
-$\rightarrow$
+$\rightarrow$ Geo-historical data is new data; quantification of past intra-urban processes; many consistence and processing issues.
 
 \medskip
 
-$\rightarrow$
+$\rightarrow$ Opening for interdisciplinary discussions and collaborations: actual new knowledge and its validation depends on disciplines.
 
 
 \bigskip
 \bigskip
 \bigskip
 
-\textbf{Soduco repository: }\\
-\url{}
+\textbf{Soduco website and repository:}
+
+
+\url{https://soduco.github.io/}
+
+\url{https://github.com/soduco}
 
 \bigskip
 
-\textbf{Models and results open at }
+\textbf{Models and results open at}
+
+
 
 \url{https://github.com/JusteRaimbault/HistoricalData}
 
