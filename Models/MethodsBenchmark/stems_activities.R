@@ -29,19 +29,21 @@ stopw = stopwords_fr
 #activities = sapply(activity_stems,function(l){l[!l%in%stopw]})
 activities = mclapply(activity_stems,function(l){l[!l%in%stopw]},mc.cores = 10)
 
-# index stems
-#stemids = unlist(sapply(1:length(activities),function(i){rep(i,length(activities[[i]]))}))
-stemids = unlist(sapply(1:length(activities),function(i){rep(i,length(activities[[i]][[1]]))}))# relou //: double list level
-allactivities = unlist(activities)
-names(stemids) <- allactivities
+save(activity_stems,activities,file='Data/directories_geocoded/processed/activities.RData')
 
-allactcount = table(allactivities)
-allactcount = sort(allactcount,decreasing = T)
+## index stems
+##stemids = unlist(sapply(1:length(activities),function(i){rep(i,length(activities[[i]]))}))
+#stemids = unlist(sapply(1:length(activities),function(i){rep(i,length(activities[[i]][[1]]))}))# relou //: double list level
+#allactivities = unlist(activities)
+#names(stemids) <- allactivities
+#
+#allactcount = table(allactivities)
+#allactcount = sort(allactcount,decreasing = T)
 # -> from this, curate a list of main activities
 #  aggregate proximities using levenstein distance? + aggregate into higher hierarchy by hand
 
-countedids = sapply(names(allactcount),function(s){stemids[which(names(stemids)==s)]})
+#countedids = sapply(names(allactcount),function(s){stemids[which(names(stemids)==s)]})
 
 
-save(activity_stems,activities,stemids,allactivities,allactcount,countedids,file='Data/directories_geocoded/processed/activities.RData')
+#save(activity_stems,activities,stemids,allactivities,allactcount,countedids,file='Data/directories_geocoded/processed/activities.RData')
 
