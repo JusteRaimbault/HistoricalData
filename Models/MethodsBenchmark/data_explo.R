@@ -10,20 +10,29 @@ library(stringdist)
 library(corrplot)
 library(ggmap)
 
-d <- read_csv('Data/Soduco/ftp3.ign.fr/Data/data-1641486178716.csv')
+#d <- read_csv('Data/Soduco/ftp3.ign.fr/Data/data-1641486178716.csv')
+d <- read_csv('Data/directories_geocoded/processed/alldata_didotbottin.csv')
 
-addresses = sapply(d$address, function(s){if(s=="NULL") NA else parse_json(s)})
-lon = sapply(addresses,function(r){if(is.na(r)) NA else if(is.null(r[[1]]$lon)) NA else r[[1]]$lon}); names(lon)=NULL
-lat = sapply(addresses,function(r){if(is.na(r)) NA else if(is.null(r[[1]]$lat)) NA else r[[1]]$lat}); names(lat)=NULL
-
-d$lon = lon; d$lat = lat
-
-
-length(which(is.na(lon)))/length(lon)
-# 67% of NA
+# not needed with new data
+#addresses = sapply(d$address, function(s){if(s=="NULL") NA else parse_json(s)})
+#lon = sapply(addresses,function(r){if(is.na(r)) NA else if(is.null(r[[1]]$lon)) NA else r[[1]]$lon}); names(lon)=NULL
+#lat = sapply(addresses,function(r){if(is.na(r)) NA else if(is.null(r[[1]]$lat)) NA else r[[1]]$lat}); names(lat)=NULL
+#d$lon = lon; d$lat = lat
 
 
+length(which(is.na(d$lon)))/length(d$lon)
+# 67% of NA - older sample
+# 11.9% only in newer data !
+
+length(which(is.na(d$activity)))/length(d$activity)
+
+
+#map <- get_map(location=c(left = 2.25, bottom=48.825, right=2.41, top=48.9), zoom = 14, source = "osm", color = "bw")
+# new bbox? -> same! (remaining 2% coding errors?)
+#quantile(d$lon,c(0.01,0.99),na.rm=T) ; 2.275089 2.402903
+#quantile(d$lat,c(0.01,0.99),na.rm=T) ; 48.82634 48.89333
 map <- get_map(location=c(left = 2.25, bottom=48.825, right=2.41, top=48.9), zoom = 14, source = "osm", color = "bw")
+
 
 for(y in unique(d$year)){
   inds = (d$year==y)
@@ -46,71 +55,6 @@ for(y in unique(d$year)){
 
 
 
-# classify activities
-
-# table(d$activity)
-
-todel = c("[","]",".","\\n",",","\"",";","-",":","(",")")
-# issue: newlines should sometimes be removes, sometimes as space: ?
-for(car in todel){d$activity=gsub(car," ",d$activity,fixed = T)}
-activity_stems= sapply(d$activity,function(s){text_tokens(s, stemmer = 'fr')})
-
-# remove stop words
-stopw = stopwords_fr
-activities = sapply(activity_stems,function(l){l[!l%in%stopw]})
-
-# index stems
-stemids = unlist(sapply(1:length(activities),function(i){rep(i,length(activities[[i]]))}))
-allactivities = unlist(activities)
-names(stemids) <- allactivities
-
-allactcount = table(allactivities)
-allactcount = sort(allactcount,decreasing = T)
-# -> from this, curate a list of main activities
-#  aggregate proximities using levenstein distance? + aggregate into higher hierarchy by hand
-
-countedids = sapply(names(allactcount),function(s){stemids[which(names(stemids)==s)]})
-
-# levenstein between most frequent stems
-stemdists = stringdistmatrix(names(allactcount)[1:1000],names(allactcount)[1:1000],method="osa")
-summary(c(stemdists))
-closeinds = which(stemdists==1,arr.ind = T)
-paste0(names(allactcount)[closeinds[,1]]," - ",names(allactcount)[closeinds[,2]])
-
-# -> not very concluding: works for many, but also aggregates some which shouldn't
-# -> keep only N most used stems?
-
-# arbitrary test: with count larger than 100
-
-write_csv(data.frame( count = allactcount[allactcount>=100], classif = rep("",length(which(allactcount>=100)))),file = 'Models/MethodsBenchmark/classif100.csv',col_names = F)
-
-# manual table stem -> classif
-classifcategs = c("NA","food","craftsmanship","art","health","law","service","teaching")
-
-# missing ouvriers? Gribaudi, M. (2014). Paris ville ouvrière. Une histoire occultée (1789-1848). La Découverte.
-# -> pas dans le bottin par construction!
-# avocats Joana, J. (1998). ENTRE LA BARRE ET LA TRIBUNE LES SECRÉTAIRES DE LA CONFÉRENCE DU STAGE DU BARREAU DE PARIS FACE À L'ACTIVITÉ PARLEMENTAIRE AU 19 e SIÈCLE. Revue française de science politique, 480-506.
-#
-
-classif = read_csv(file='Models/MethodsBenchmark/classif100_manual.csv',col_names = F)
-classif[which(is.na(classif[,3])),3]="NA"
-
-synthact = unlist(classif[,3])
-names(synthact) = unlist(classif[,1])
-allsynthact =synthact[names(stemids)]
-allsynthact[allsynthact=="NA"]=NA
-synthactcounts = table(allsynthact)
-
-mainsynthact = as_tibble(data.frame(synth = allsynthact, id = stemids)) %>% group_by(id) %>%
-  summarise(mainsynthact = if(length(which(is.na(synth)))==length(synth)) NA else synth[!is.na(synth)][c(synthactcounts[synth[!is.na(synth)]]) == max(synthactcounts[synth[!is.na(synth)]])])
-
-mainsynthact = mainsynthact[!duplicated(mainsynthact$id),]
-mainsynthactc = mainsynthact$mainsynthact; names(mainsynthactc)<-mainsynthact$id
-
-d$mainsynthact = mainsynthactc[1:nrow(d)]
-
-d = d[which(!is.na(d$lat)&!is.na(d$lon)&!is.na(d$mainsynthact)&!is.na(d$year)),]
-
 # maps by activity
 for(y in unique(d$year)){
   for(act in unique(d$mainsynthact)){
@@ -125,6 +69,16 @@ for(y in unique(d$year)){
   )
 }
 }
+
+
+
+## todo: plot with number of entries per year (loc and synthact)
+
+
+
+
+##### coevolution
+
 
 
 d$lonsq = cut(d$lon,10)
