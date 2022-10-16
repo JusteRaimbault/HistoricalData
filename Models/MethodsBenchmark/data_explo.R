@@ -25,7 +25,11 @@ length(which(is.na(d$lon)))/length(d$lon)
 # 11.9% only in newer data !
 
 length(which(is.na(d$activity)))/length(d$activity)
+# only 15%
 
+# loc and activity
+1 - length(which(is.na(d$activity)|is.na(d$lon)|is.na(d$lat)))/length(d$activity)
+# 0.8032564
 
 #map <- get_map(location=c(left = 2.25, bottom=48.825, right=2.41, top=48.9), zoom = 14, source = "osm", color = "bw")
 # new bbox? -> same! (remaining 2% coding errors?)
@@ -35,9 +39,10 @@ map <- get_map(location=c(left = 2.25, bottom=48.825, right=2.41, top=48.9), zoo
 
 
 for(y in unique(d$year)){
+  show(y)
   inds = (d$year==y)
   
-  df = data.frame(lon = lon[inds],lat = lat[inds])
+  df = data.frame(lon = d$lon[inds],lat = d$lat[inds])
   
   # works with bbox location only for OSM (otherwise get gmaps - needs api key)
   
@@ -49,10 +54,14 @@ for(y in unique(d$year)){
   
  
     #ggplot(,aes(x=lon,y=lat))+geom_density2d_filled()+ggtitle(y)
-    , file=paste0('Results/MethodsBenchmark/density-',y,'.png'), width=20,height=18, units='cm'
+    , file=paste0('Results/MethodsBenchmark/maps/density-',y,'.png'), width=20,height=18, units='cm'
   )
 }
 
+
+
+####
+# load synth activities
 
 
 # maps by activity
@@ -80,7 +89,9 @@ for(y in unique(d$year)){
 ##### coevolution
 
 
+## data preparation
 
+# spatial grouping
 d$lonsq = cut(d$lon,10)
 d$latsq = cut(d$lat,10)
 dcounts = d %>% group_by(lonsq,latsq,year,mainsynthact) %>% summarise(count=n())
@@ -101,13 +112,16 @@ for(y in unique(d$year)){
 }
 }
 
+# temporal diffs
+years = sort(unique(d$year),decreasing = F)
 deltas = data.frame()
 for(act in unique(d$mainsynthact)){
- delta1 = dcounts[dcounts$year==1841&dcounts$mainsynthact==act,] %>% left_join(dcounts[dcounts$year==1842&dcounts$mainsynthact==act,],by=c('lonsq'='lonsq','latsq'='latsq')) %>% summarise(delta = count.y - count.x)
- delta2 = dcounts[dcounts$year==1842&dcounts$mainsynthact==act,] %>% left_join(dcounts[dcounts$year==1844&dcounts$mainsynthact==act,],by=c('lonsq'='lonsq','latsq'='latsq')) %>% summarise(delta = count.y - count.x)
- deltas = rbind(deltas,data.frame(delta1[,c("lonsq","latsq")],delta1=delta1$delta,delta2=delta2$delta,mainsynthact=rep(act,nrow(delta1))))
+  for (i in 2:length(years)){
+   currentdelta = dcounts[dcounts$year==years[i-1]&dcounts$mainsynthact==act,] %>% left_join(dcounts[dcounts$year==years[i]&dcounts$mainsynthact==act,],by=c('lonsq'='lonsq','latsq'='latsq')) %>% summarise(delta = count.y - count.x)
+   deltas = rbind(deltas,data.frame(currentdelta[,c("lonsq","latsq")],delta=currentdelta$delta,mainsynthact=rep(act,nrow(delta1))))
+  }
 }
-
+  
 acts = unique(d$mainsynthact)
 
 # basic correlations - for all couples of activities - all lags are simple in that case: 4
