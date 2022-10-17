@@ -67,6 +67,7 @@ for(y in unique(d$year)){
 # maps by activity
 for(y in unique(d$year)){
   for(act in unique(d$mainsynthact)){
+    show(paste0(y,"-",act))
   inds = (d$year==y&d$mainsynthact==act)
   df = data.frame(lon = d$lon[inds],lat = d$lat[inds])
   ggsave(
@@ -74,7 +75,7 @@ for(y in unique(d$year)){
     ggmap(map)+geom_point(data=df, aes(x=lon,y=lat), colour="red", alpha = .1)+
       stat_density2d(data=df,aes(x=lon,y=lat, fill= ..level..), alpha =0.3, geom="polygon")+
       ggtitle(y)
-    , file=paste0('Results/MethodsBenchmark/density-',y,'-',act,'.png'), width=20,height=18, units='cm'
+    , file=paste0('Results/MethodsBenchmark/maps/density-',y,'-',act,'.png'), width=20,height=18, units='cm'
   )
 }
 }
@@ -83,8 +84,11 @@ for(y in unique(d$year)){
 
 ## todo: plot with number of entries per year (loc and synthact)
 
-
-
+dy = d %>% group_by(year,mainsynthact) %>% summarise(act_count=n())
+ggsave(
+  ggplot(dy,aes(x=year,y=act_count,fill=mainsynthact))+geom_col(),
+  file='Results/MethodsBenchmark/counts-year.png'
+)
 
 ##### coevolution
 
@@ -118,43 +122,44 @@ deltas = data.frame()
 for(act in unique(d$mainsynthact)){
   for (i in 2:length(years)){
    currentdelta = dcounts[dcounts$year==years[i-1]&dcounts$mainsynthact==act,] %>% left_join(dcounts[dcounts$year==years[i]&dcounts$mainsynthact==act,],by=c('lonsq'='lonsq','latsq'='latsq')) %>% summarise(delta = count.y - count.x)
-   deltas = rbind(deltas,data.frame(currentdelta[,c("lonsq","latsq")],delta=currentdelta$delta,mainsynthact=rep(act,nrow(delta1))))
+   deltas = rbind(deltas,data.frame(currentdelta[,c("lonsq","latsq")],delta=currentdelta$delta,mainsynthact=rep(act,nrow(currentdelta)),year=rep(years[i],nrow(currentdelta))))
   }
 }
-  
+
 acts = unique(d$mainsynthact)
 
-# basic correlations - for all couples of activities - all lags are simple in that case: 4
-cormat11 = matrix(data = 0,nrow = length(acts),ncol=length(acts))
-rownames(cormat11) = acts; colnames(cormat11) = acts
-cormat11low = cormat11; cormat11high = cormat11
-cormat22 = cormat11; cormat22low = cormat11; cormat22high = cormat11
-cormat21 = cormat11; cormat21low = cormat11; cormat21high = cormat11
-cormat12 = cormat11; cormat12low = cormat11; cormat12high = cormat11
+
+# estimate lagged corrs for a time window and two activities
+
+cormat = matrix(data = 0,nrow = length(acts),ncol=length(acts))
+rownames(cormat) = acts; colnames(cormat) = acts
+cormatlow = cormat; cormathigh = cormat; taumat = cormat
+
+taus = 2:10
+K = length(which(deltas$mainsynthact=="craftsmanship"&deltas$year==1858))
 
 for(act1 in acts){
   for(act2 in acts){
-    d1 = deltas[deltas$mainsynthact==act1,]
-    d2 = deltas[deltas$mainsynthact==act2,]
-    rho11 = cor.test(d1$delta1,d2$delta1);cormat11[act1,act2] = rho11$estimate; cormat11low[act1,act2] = rho11$conf.int[1]; cormat11high[act1,act2] = rho11$conf.int[2]
-    rho22 = cor.test(d1$delta2,d2$delta2);cormat22[act1,act2] = rho22$estimate; cormat22low[act1,act2] = rho22$conf.int[1]; cormat22high[act1,act2] = rho22$conf.int[2]
-    rho12 = cor.test(d1$delta1,d2$delta2);cormat12[act1,act2] = rho12$estimate; cormat12low[act1,act2] = rho12$conf.int[1]; cormat12high[act1,act2] = rho12$conf.int[2]
-    rho21 = cor.test(d1$delta2,d2$delta1);cormat21[act1,act2] = rho21$estimate; cormat21low[act1,act2] = rho21$conf.int[1]; cormat21high[act1,act2] = rho21$conf.int[2]
-  }
+    show(paste0(act1,"-",act2))
+    d1 = deltas$delta[deltas$mainsynthact==act1]
+    d2 = deltas$delta[deltas$mainsynthact==act2]
+    corrs = c();corrsmin=c();corrsmax=c()
+    for(tau in taus){
+       rho = cor.test(d1[1:(length(d1)-(tau*K))],d2[(tau*K+1):length(d2)])
+       corrs=append(corrs,rho$estimate);corrsmin=append(corrsmin,rho$conf.int[1]);corrsmax=append(corrsmax,rho$conf.int[2])
+    }
+    indmax = which(abs(corrs)==max(abs(corrs)))
+    cormat[act1,act2] = corrs[indmax];cormatlow[act1,act2] = corrsmin[indmax]; cormathigh[act1,act2] = corrsmax[indmax]; taumat[act1,act2] = taus[indmax]
+  }   
 }
 
-png(file='Results/MethodsBenchmark/laggedcorrs-11.png')
-corrplot(cormat11,lowCI.mat=cormat11low, uppCI.mat = cormat11high,title = "Delta1 - Delta1")
+png(file='Results/MethodsBenchmark/laggedcorrs.png',width = 1000, height = 1000)
+corrplot(cormat,lowCI.mat=cormatlow, uppCI.mat = cormathigh)
 dev.off()
 
-png(file='Results/MethodsBenchmark/laggedcorrs-22.png')
-corrplot(cormat22,lowCI.mat=cormat22low, uppCI.mat = cormat22high,title = "Delta2 - Delta2")
-dev.off()
+library(reshape2)
+ggsave(
+  ggplot(melt(taumat),aes(x=Var1,y=Var2,fill=value))+geom_raster()+xlab("")+ylab("")+scale_fill_continuous(name=expression(tau)),
+  file='Results/MethodsBenchmark/taus.png'
+)
 
-png(file='Results/MethodsBenchmark/laggedcorrs-12.png')
-corrplot(cormat12,lowCI.mat=cormat12low, uppCI.mat = cormat12high,title = "Delta1 - Delta2")
-dev.off()
-
-png(file='Results/MethodsBenchmark/laggedcorrs-21.png')
-corrplot(cormat21,lowCI.mat=cormat21low, uppCI.mat = cormat21high,title = "Delta2 - Delta1")
-dev.off()

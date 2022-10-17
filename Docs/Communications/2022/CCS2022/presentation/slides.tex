@@ -83,7 +83,7 @@ $^{4}$UMR CNRS 8504 G{\'e}ographie-cit{\'e}s
 
 
 \date{\textbf{CCS 2022}\\
-Session \\
+Session Urban structure\\
 17/10/2022
 }
 
@@ -293,7 +293,7 @@ $\rightarrow$ Difficulty to build geo-historical data: geocoding \cite{cura2018h
 		
 		\bigskip
 		
-		$\rightarrow$ Work on \textit{Didot-Bottin}, covering most of 19th century OTHER sources
+		$\rightarrow$ Work on \textit{Didot-Bottin}, covering most of 19th century (to avoid multi-source bias for now)
 		
 		\bigskip
 		
@@ -332,11 +332,11 @@ $\rightarrow$ Natural Language Processing: stop-words removal and stemming to de
 
 \bigskip
 
-$\rightarrow$ Stems with more than 100 occurrences (XXXX) coded for broad activities (food, craftsmanship, art and literature, health, law and governance, service, teaching)
+$\rightarrow$ Stems with more than 100 occurrences (996) coded for broad activities (food, craftsmanship, art and literature, health, law and governance, service, teaching)
 
 \bigskip
 
-$\rightarrow$ XXXX entries with coordinates and classified activities
+$\rightarrow$ 1,990,222 entries with coordinates and classified activities
 
 
 
@@ -348,12 +348,11 @@ $\rightarrow$ XXXX entries with coordinates and classified activities
 \section{Results}
 
 
-\sframe{}{
-
+%\sframe{}{%
 % plot: broad activities per year
-
-
-}
+%
+%
+%}
 
 
 \sframe{Location of activities}{
@@ -361,10 +360,9 @@ $\rightarrow$ XXXX entries with coordinates and classified activities
 
 \begin{center}
 \hspace{-1cm}
-	%\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1841.png}\hspace{0.1cm}
-	%\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1844.png}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1857.png}\hspace{0.1cm}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1908.png}
 \end{center}
-
 
 
 }
@@ -379,11 +377,13 @@ $\rightarrow$ XXXX entries with coordinates and classified activities
 \hspace{-1cm}
 	%\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1844-craftsmanship.png}\hspace{0.1cm}
 	%\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1844-law.png}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1857-craftsmanship.png}\hspace{0.1cm}
+	\includegraphics[width=0.49\textwidth, trim={0 0 4.5cm 0}]{figures/density-1857-food.png}
 \end{center}
 
 \medskip
 
-Left: craftsmanship; Right: law.
+Left: craftsmanship; Right: food.
 
 
 }
@@ -476,7 +476,7 @@ $\rightarrow$ Variation of activity counts in time $\Delta N_{a,r} (t) = N_{a,r}
 $\rightarrow$ Lagged correlations in time between activities
 
 \[
-\rho_{r,s}(\tau) = \rho \left[\Delta N_{a,r} (t), \Delta N_{a,s} (t - \tau) \right]
+\rho_{a_1,a_2}(\tau) = \rho \left[\Delta N_{a_1,r} (t), \Delta N_{a_2,r} (t - \tau) \right]
 \]
 
 \bigskip
@@ -487,7 +487,7 @@ $\rightarrow$ Lagged correlations in time between activities
 }
 
 
-\sframe{Results: co-evolution}{
+\sframe{Results: lagged correlations}{
 
 %We find several significant correlations (using Fisher confidence intervals), mostly negative for lagged cor- relations. This corresponds to a dynamic of sustitution of activities, with clusters rapidly replaced. Food and health are positively correlated and in co-evolution, while the other significantly co-evolving couple of activities is health and art but in a negative manner: in some districts medical pro- fessions replace artists and the contrary in others.
 
@@ -498,23 +498,34 @@ $\rightarrow$ Lagged correlations in time between activities
 
 \centering
 
-%\includegraphics[height=0.9\textheight]{figures/laggedcorrs-12.png}
+\includegraphics[height=0.8\textheight]{figures/laggedcorrs.png}
 
+\medskip
+
+\textit{Optimal lagged correlations between variations of activity counts}
 
 }
 
-\sframe{Simultaneous correlations}{
-
-%  We also consider simultaneous correlations, and find for example that food and craftsmanship have joint dynamics in the last time interval, but not during the first considered. 
+\sframe{Results}{
 
 \centering
 
-%\includegraphics[height=0.9\textheight]{figures/laggedcorrs-22.png}
+\includegraphics[height=0.8\textheight]{figures/taus.png}
 
+\medskip
 
+\textit{Corresponding delays}
 
 
 }
+
+%\sframe{Simultaneous correlations}{
+%  We also consider simultaneous correlations, and find for example that food and craftsmanship have joint dynamics in the last time interval, but not during the first considered. 
+
+%\centering
+
+%\includegraphics[height=0.9\textheight]{figures/laggedcorrs-22.png}
+%}
 
 \section{Discussion}
 
@@ -540,9 +551,9 @@ $\rightarrow$ In discussion with historians in the project: capture qualitative 
 
 \textbf{Current and future work:}
 
-\medskip
+%\medskip
 
-$\rightarrow$ Extension to a longer time span (all repertoires soon processed for OCR).
+%$\rightarrow$ Extension to a longer time span (all repertoires soon processed for OCR).
 
 \medskip
 
@@ -550,7 +561,8 @@ $\rightarrow$ Sensitivity analysis to classification, meta-parameters; null mode
 
 \medskip
 
-$\rightarrow$ Endogenous spatial neighbourhoods to estimate correlations, using a GWR-like approach \cite{brunsdon1998geographically}. (// original method) + SENSITIVITY ANALYSIS 
+$\rightarrow$ Endogenous spatial neighbourhoods to estimate correlations, using a GWR-like approach \cite{brunsdon1998geographically}; temporal moving-window.
+%(// original method) + SENSITIVITY ANALYSIS 
 
 \medskip
 

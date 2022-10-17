@@ -2,6 +2,7 @@
 
 
 # (after stem_activities)
+load('Data/directories_geocoded/processed/activities_count.RData')
 
 # levenstein between most frequent stems
 #stemdists = stringdistmatrix(names(allactcount)[1:1000],names(allactcount)[1:1000],method="osa")
@@ -14,8 +15,9 @@
 
 # arbitrary test: with count larger than 100
 
+# new data: too much -> 1000
 
-write_csv(data.frame( count = allactcount[allactcount>=100], classif = rep("",length(which(allactcount>=100)))),file = 'Models/MethodsBenchmark/classif100.csv',col_names = F)
+write_csv(data.frame( count = allactcount[allactcount>=1000], classif = rep("",length(which(allactcount>=1000)))),file = 'Models/MethodsBenchmark/classif1000.csv',col_names = F)
 
 # manual table stem -> classif
 classifcategs = c("NA","food","craftsmanship","art","health","law","service","teaching")
@@ -25,7 +27,7 @@ classifcategs = c("NA","food","craftsmanship","art","health","law","service","te
 # avocats Joana, J. (1998). ENTRE LA BARRE ET LA TRIBUNE LES SECRÉTAIRES DE LA CONFÉRENCE DU STAGE DU BARREAU DE PARIS FACE À L'ACTIVITÉ PARLEMENTAIRE AU 19 e SIÈCLE. Revue française de science politique, 480-506.
 #
 
-classif = read_csv(file='Models/MethodsBenchmark/classif100_manual.csv',col_names = F)
+classif = read_csv(file='Models/MethodsBenchmark/classif1000_manual.csv',col_names = F)
 classif[which(is.na(classif[,3])),3]="NA"
 
 synthact = unlist(classif[,3])
