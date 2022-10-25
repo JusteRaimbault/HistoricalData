@@ -1,7 +1,19 @@
 
 
+##
+# ! classif a rediscuter / point of view of an economist?
+#  and/or try hierarchical classif -> can then test different depth level
+#  endog classif? complique - on similarities of spatio-temporal dynamics why not?
+
+
+setwd(paste0(Sys.getenv("CS_HOME"),'/NetworksTerritories/HistoricalData/'))
+
+library(dplyr)
+library(ggplot2)
 
 # (after stem_activities)
+
+dd <- read_csv('Data/directories_geocoded/processed/alldata_didotbottin.csv')
 load('Data/directories_geocoded/processed/activities_count.RData')
 
 # levenstein between most frequent stems
@@ -27,7 +39,7 @@ classifcategs = c("NA","food","craftsmanship","art","health","law","service","te
 # avocats Joana, J. (1998). ENTRE LA BARRE ET LA TRIBUNE LES SECRÉTAIRES DE LA CONFÉRENCE DU STAGE DU BARREAU DE PARIS FACE À L'ACTIVITÉ PARLEMENTAIRE AU 19 e SIÈCLE. Revue française de science politique, 480-506.
 #
 
-classif = read_csv(file='Models/MethodsBenchmark/classif1000_manual.csv',col_names = F)
+classif = read_csv(file='Models/CoevolActivities/classif1000_manual.csv',col_names = F)
 classif[which(is.na(classif[,3])),3]="NA"
 
 synthact = unlist(classif[,3])
@@ -42,6 +54,15 @@ mainsynthact = as_tibble(data.frame(synth = allsynthact, id = stemids)) %>% grou
 mainsynthact = mainsynthact[!duplicated(mainsynthact$id),]
 mainsynthactc = mainsynthact$mainsynthact; names(mainsynthactc)<-mainsynthact$id
 
-d$mainsynthact = mainsynthactc[1:nrow(d)]
+dd$mainsynthact = mainsynthactc[1:nrow(dd)]
 
-d = d[which(!is.na(d$lat)&!is.na(d$lon)&!is.na(d$mainsynthact)&!is.na(d$year)),]
+d = dd[which(!is.na(dd$lat)&!is.na(dd$lon)&!is.na(dd$mainsynthact)&!is.na(dd$year)),]
+
+
+# check counts by year before removing NAs
+ggplot(dd %>% group_by(year,mainsynthact) %>% summarise(act_count=n()),aes(x=year,y=act_count,fill=mainsynthact))+geom_col()
+
+
+write_csv(d,file='Data/directories_geocoded/processed/alldata_didotbottin_classif.csv')
+
+

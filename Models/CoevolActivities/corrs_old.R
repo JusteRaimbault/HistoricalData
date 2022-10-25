@@ -1,5 +1,17 @@
 
 
+# lagged corrs estimations, with data:
+# d <- read_csv('Data/Soduco/ftp3.ign.fr/Data/data-1641486178716.csv')
+
+# not needed with new data
+#addresses = sapply(d$address, function(s){if(s=="NULL") NA else parse_json(s)})
+#lon = sapply(addresses,function(r){if(is.na(r)) NA else if(is.null(r[[1]]$lon)) NA else r[[1]]$lon}); names(lon)=NULL
+#lat = sapply(addresses,function(r){if(is.na(r)) NA else if(is.null(r[[1]]$lat)) NA else r[[1]]$lat}); names(lat)=NULL
+#d$lon = lon; d$lat = lat
+# 67% of NA - older sample
+
+
+
 # basic correlations - for all couples of activities - all lags are simple in that case: 4
 cormat11 = matrix(data = 0,nrow = length(acts),ncol=length(acts))
 rownames(cormat11) = acts; colnames(cormat11) = acts
