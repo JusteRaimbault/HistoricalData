@@ -6,6 +6,14 @@
 
 
 
+## 2022/06/30
+
+classif of activities: sensit of results to different classif ; null model: random cat -> correlations should be 0? (from mail 30/06, 26/09 - 09/11)
+
+benchmark paper -> synthetic data (pb instrument?) ; other dataset: biology, species known in co-evol
+target generalist journal - quant? 
+[idem]
+
 ## 2022/06/15
 
 Reunion 14/06
