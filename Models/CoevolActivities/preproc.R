@@ -1,5 +1,5 @@
 
-# preprocessing of full dataset (Didot-Bottin only for now)
+# preprocessing of full dataset
 
 setwd(paste0(Sys.getenv("CS_HOME"),'/NetworksTerritories/HistoricalData/'))
 
@@ -12,10 +12,13 @@ library(foreach)
 # local
 #datadir = paste0(Sys.getenv("CS_HOME_EXT"),'/NetworksTerritories/HistoricalData/Data/directories_geocoded/')
 # remote 
-datadir = paste0(Sys.getenv("CS_HOME"),'/NetworksTerritories/HistoricalData/Data/directories_geocoded/')
+#datadir = paste0(Sys.getenv("CS_HOME"),'/NetworksTerritories/HistoricalData/Data/directories_geocoded/')
 
+# latest released dataset: DOI:10.34847/nkl.98eem49t
+datadir = paste0(Sys.getenv("CS_HOME"),'/NetworksTerritories/HistoricalData/Data/alphabetical_lists/')
 
-files = list.files(datadir, pattern="DidotBottin")
+#files = list.files(datadir, pattern="DidotBottin")
+files = list.files(datadir) # filter done at entry level with the released dataset? -> no filter DidoBottin finally
 
 cl = parallel::makeCluster(parallel::detectCores())
 doParallel::registerDoParallel(cl)
@@ -33,7 +36,8 @@ todel = c("[","]",".","\\n",",","\"",";","-",":","(",")","\n")
 # test
 #alldata <- foreach(i =1:40,.combine=rbind) %dopar% {
 alldata <- foreach(i =1:length(files),.combine=rbind) %dopar% {
-  library(jsonlite)
+  #library(jsonlite) # no need of json anymore
+  library(readr)
   library(sf)
   #show(i)
   # local run
@@ -44,39 +48,57 @@ alldata <- foreach(i =1:length(files),.combine=rbind) %dopar% {
   #  gc()
   #}
   f = files[i]
-  currentyear = substr(strsplit(f,'_')[[1]][2],1,4)
-  currentraw = read_json(paste0(datadir,f))
-  currentraw=currentraw[sapply(currentraw,function(e){e$type=="ENTRY"})]
-  currentdata = sapply(currentraw,function(e){
-    georef = NA; precision=NA
-    if(!is.null(e$geocoded)){
-      if(is.null(e$geocoded[[1]]$precise.geom)){
-        georef = e$geocoded[[1]]$coarse.geom; precision = 'coarse'
-      }else {
-        georef = e$geocoded[[1]]$precise.geom; precision = 'precise'
-      }
-    }
-    if(length(georef)==0){coords=c(NA,NA)}else{
-      if(is.na(georef)){coords=c(NA,NA)} else {coords = c(st_coordinates(st_centroid(st_transform(st_as_sf(data.frame(geom=georef),wkt='geom',crs=st_crs(2154)),st_crs(4326)))))}
-    }
-    activity=strsplit(strsplit(e$ner_xml,'<ACT>')[[1]][2],'</ACT>')[[1]][1] # pb if two activities? no, first
-    for(car in todel){activity=gsub(car," ",activity,fixed = T)}
-    return(c(
-      activity = activity,
-      lon = coords[1],
-      lat=coords[2],
-      precision=precision
-     )
-    )
-  })
-  currentdata = t(currentdata)
-  currentdata=as.data.frame(cbind(currentdata,rep(currentyear,nrow(currentdata))))
-  names(currentdata)<-c("activity","lon","lat","precision","year")
+  #currentyear = substr(strsplit(f,'_')[[1]][2],1,4) #not needed anymore -> source.publication_date
+  #currentraw = read_json(paste0(datadir,f))
+  currentraw = read_csv(paste0(datadir,f))
+  
+  # entries only
+  #currentraw=currentraw[sapply(currentraw,function(e){e$type=="ENTRY"})]
+  currentraw=currentraw[currentraw$type=="ENTRY",]
+  
+  #currentdata = sapply(currentraw,function(e){
+  #  georef = NA; precision=NA
+  #  if(!is.null(e$geocoded)){
+  #    if(is.null(e$geocoded[[1]]$precise.geom)){
+  #      georef = e$geocoded[[1]]$coarse.geom; precision = 'coarse'
+  #    }else {
+  #      georef = e$geocoded[[1]]$precise.geom; precision = 'precise'
+  #    }
+  #  }
+  #  if(length(georef)==0){coords=c(NA,NA)}else{
+  #    if(is.na(georef)){coords=c(NA,NA)} else {coords = c(st_coordinates(st_centroid(st_transform(st_as_sf(data.frame(geom=georef),wkt='geom',crs=st_crs(2154)),st_crs(4326)))))}
+  #  }
+  #  activity=strsplit(strsplit(e$ner_xml,'<ACT>')[[1]][2],'</ACT>')[[1]][1] # pb if two activities? no, first
+  #  for(car in todel){activity=gsub(car," ",activity,fixed = T)}
+  #  return(c(
+  #    activity = activity,
+  #    lon = coords[1],
+  #    lat=coords[2],
+  #    precision=precision
+  #   )
+  #  )
+  #})
+  #currentdata = t(currentdata)
+  #currentdata=as.data.frame(cbind(currentdata,rep(currentyear,nrow(currentdata))))
+  #names(currentdata)<-c("activity","lon","lat","precision","year")
   #alldata = rbind(alldata,currentdata)
+  
+  # no need to reproject with new data: already lon lat
+  #coords = sapply(currentraw$geocoding.precise.geom,function(s){if(is.na(s)) return(c(NA,NA)) else st_coordinates(st_centroid(st_transform(st_as_sf(data.frame(geom=s),wkt='geom',crs=st_crs(2154)),st_crs(4326))))})
+  coords = sapply(currentraw$geocoding.precise.geom,function(s){if(is.na(s)) return(c(NA,NA)) else st_coordinates(st_centroid(st_as_sf(data.frame(geom=s),wkt='geom',crs=st_crs(4326))))})
+  
+  year = currentraw$source.publication_date
+  
+  activity = sapply(currentraw$ner_xml,function(s){strsplit(strsplit(s,'<ACT>')[[1]][2],'</ACT>')[[1]][1]})
+  for(car in todel){activity=gsub(car," ",activity,fixed = T)}
+  
+  # dont keep precision, focus on precise only
+  currentdata = data.frame(activity=activity,lon=coords[1,],lat=coords[2,], year=year)
   return(currentdata)
 }
 
-write.table(alldata,file=paste0(datadir,'processed/alldata_didotbottin.csv'),row.names = F,col.names = T,sep=",")
+dir.create(paste0(datadir,'processed'),recursive = T)
+write.table(alldata,file=paste0(datadir,'processed/alldata_release20230510.csv'),row.names = F,col.names = T,sep=",")
 
 parallel::stopCluster(cl = cl)
 
