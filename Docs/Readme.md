@@ -6,6 +6,17 @@
 
 
 
+## 2023/06/23
+
+Bib causality/ML
+https://dl.acm.org/doi/pdf/10.1145/3241036
+[firefox_downloads]/3241036.pdf
+["]/2206.15475.pdf
+["]/2112.10425.pdf
+["]/1801.03583.pdf
+
+
+
 ## 2022/06/30
 
 classif of activities: sensit of results to different classif ; null model: random cat -> correlations should be 0? (from mail 30/06, 26/09 - 09/11)
